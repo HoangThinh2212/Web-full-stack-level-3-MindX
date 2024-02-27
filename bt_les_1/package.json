@@ -1,0 +1,12 @@
+{
+  "name": "bt_les_1",
+  "version": "1.0.0",
+  "description": "Xu Ly Du Lieu",
+  "main": "renderData.js",
+  "type":"commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
