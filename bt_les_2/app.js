@@ -106,6 +106,20 @@ app.post("/posts/:userId", (req, res) => {
   }
 });
 
+// 8. Viết API lấy tất cả các bài post với isPublic là true, false thì sẽ không trả về.
+app.get("/posts", (req, res) => {
+  const publicPosts = posts.filter((post) => post.isPublic === true);
+  if (publicPosts.length > 0) {
+    res.status(200).json({
+      msg: "Các bài post công khai được liệt kê dưới đây",
+      data: publicPosts,
+    });
+  } else {
+    res.status(404).json({
+      msg: "Không có bài post công khai nào được tìm thấy",
+    });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Listen on port ${PORT}`);
