@@ -135,7 +135,52 @@ app.put("/posts/update/:postId", (req, res) => {
     .json({ msg: "Post updated successfully", data: postToUpdate });
 });
 
-// 6. Viết API xoá bài post với postId được truyền trên params, chỉ có user tạo bài mới được phép.
+// 6. Viết API xoá bài post với postId được truyền trên params, chỉ có user tạo bài mới được phép. ---> Bị Lỗi Cannot Delete không biết tại sao
+app.delete("/posts/delete/:postId", (req, res) => {
+  const { postId } = req.params;
+  const { userId } = req.body || {};
+
+  // Find the post with the given postId
+  const postToDeleteIndex = posts.findIndex((post) => post.postId === postId);
+
+  if (postToDeleteIndex === -1) {
+    return res.status(404).json({ msg: "Post not found" });
+  }
+
+  const postToDelete = posts[postToDeleteIndex];
+
+  // Check if the userId matches the userId of the post
+  if (postToDelete.userId !== userId) {
+    return res
+      .status(403)
+      .json({ msg: "Unauthorized: Only the creator can delete the post" });
+  }
+
+  // Remove the post from the array
+  posts.splice(postToDeleteIndex, 2);
+
+  res
+    .status(200)
+    .json({ msg: "Post deleted successfully", data: postToDelete });
+});
+
+// 7. Viết API tìm kiếm các bài post với content tương ứng được gửi lên từ query params.
+app.get("/posts/search", (req, res) => {
+  const { content } = req.query;
+
+  if (!content) {
+    return res
+      .status(400)
+      .json({ error: "Content parameter is required for search." });
+  }
+
+  // Tìm kiếm
+  const matchingPosts = posts.filter((post) =>
+    post.content.toLowerCase().includes(content.toLowerCase())
+  );
+
+  res.status(200).json({ results: matchingPosts });
+});
 
 // 8. Viết API lấy tất cả các bài post với isPublic là true, false thì sẽ không trả về.
 app.get("/posts", (req, res) => {
