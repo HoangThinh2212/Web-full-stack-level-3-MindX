@@ -199,7 +199,8 @@ const app = http.createServer((req, res) => {
   }
 
   // Câu 5 Update user base on id
-  if (endpoint === "/users/update") {
+  if (endpoint.startsWith( "/users/update") && method === "GET") {
+    const id = pathname
   }
 });
 
