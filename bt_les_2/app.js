@@ -106,6 +106,37 @@ app.post("/posts/:userId", (req, res) => {
   }
 });
 
+// 5. Viết API cập nhật thông tin bài post với postId được truyền trên params, chỉ có user tạo bài mới được phép.
+app.put("/posts/update/:postId", (req, res) => {
+  const { postId } = req.params;
+  const { userId, content, isPublic } = req.body || {};
+
+  // Find the post with the given postId
+  const postToUpdate = posts.find((post) => post.postId === postId);
+
+  if (!postToUpdate) {
+    return res.status(404).json({ msg: "Post is not found" });
+  }
+
+  // Check if the userId matches the userId of the post
+  if (postToUpdate.userId !== userId) {
+    return res
+      .status(403)
+      .json({ msg: "Unauthorized: Only the creator can update the post" });
+  }
+
+  // Update post information
+  postToUpdate.content = content || postToUpdate.content;
+  postToUpdate.isPublic =
+    isPublic !== undefined ? isPublic : postToUpdate.isPublic;
+
+  res
+    .status(201)
+    .json({ msg: "Post updated successfully", data: postToUpdate });
+});
+
+// 6. Viết API xoá bài post với postId được truyền trên params, chỉ có user tạo bài mới được phép.
+
 // 8. Viết API lấy tất cả các bài post với isPublic là true, false thì sẽ không trả về.
 app.get("/posts", (req, res) => {
   const publicPosts = posts.filter((post) => post.isPublic === true);
