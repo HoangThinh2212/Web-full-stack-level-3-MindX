@@ -1,0 +1,24 @@
+{
+  "name": "bt_les_3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"nodemon app.js\" \"json-server --watch db.json\""
+  },
+  "author": "hoangthinh",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.0"
+  },
+  "dependencies": {
+    "express": "^4.18.3",
+    "fs": "^0.0.1-security",
+    "json-server": "^0.17.4",
+    "node-fetch": "^3.3.2",
+    "uuid": "^9.0.1"
+  }
+}
