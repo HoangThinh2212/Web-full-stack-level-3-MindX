@@ -27,6 +27,15 @@ function validateUsername(username) {
 
   return regex.test(username);
 }
+// Function Check Null or Undefined
+function checkNullOrUndefined(...args) {
+  for (const arg of args) {
+      if (arg === null || arg === undefined) {
+          return true;
+      }
+  }
+  return false;
+}
 // 1.Viết API việc đăng ký user với userName, id sẽ được là một string ngẫu nhiên, không được phép trùng, bắt đầu từ ký tự US (ví dụ: US8823).
 app.post("/users", (req, res) => {
   fetch("http://localhost:3000/users")
