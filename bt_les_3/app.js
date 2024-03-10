@@ -30,52 +30,43 @@ function validateUsername(username) {
 // Function Check Null or Undefined
 function checkNullOrUndefined(...args) {
   for (const arg of args) {
-      if (arg === null || arg === undefined) {
-          return true;
-      }
+    if (arg === null || arg === undefined) {
+      return true;
+    }
   }
   return false;
 }
 // 1.Viết API việc đăng ký user với userName, id sẽ được là một string ngẫu nhiên, không được phép trùng, bắt đầu từ ký tự US (ví dụ: US8823).
 app.post("/users", (req, res) => {
-  fetch("http://localhost:3000/users")
-    .then((rs) => {
-      rs.json();
-    })
-    .then((data) => {
-      const {users , posts, comments} = data;
-      const { userName } = req.body || {};
+  const { userName } = req.body || {};
 
-      try {
-        if (validateUsername(userName) !== true)
-          throw new Error("userName is incorrect! Please re-check");
-        // Check if userName already exists
-        const existingUser = users.find(
-          (user) => user.userName === data.userName
-        );
-        if (existingUser) {
-          return res
-            .status(400)
-            .json({ error: "User with this userName already exists." });
-        }
+  try {
+    if (validateUsername(userName) !== true)
+      throw new Error("userName is incorrect! Please re-check");
+    // Check if userName already exists
+    const existingUser = db.users.find((user) => user.userName === userName);
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ error: "User with this userName already exists." });
+    }
 
-        // Generate a unique ID starting with "US"
-        const generatedId = `US${uuidv4().split("-").join("").substr(0, 8)}`;
+    // Generate a unique ID starting with "US"
+    const generatedId = `US${uuidv4().split("-").join("").substr(0, 8)}`;
 
-        // Add the new user to the users array
-        users.push({ id: generatedId, userName });
+    // Add the new user to the users array
+    users.push({ id: generatedId, userName });
 
-        res
-          .status(201)
-          .json({ msg: "User registered successfully", userId: generatedId });
-      } catch (error) {
-        res.status(403).send({
-          data: null,
-          success: false,
-          error: error.message,
-        });
-      }
+    res
+      .status(201)
+      .json({ msg: "User registered successfully", userId: generatedId });
+  } catch (error) {
+    res.status(403).send({
+      data: null,
+      success: false,
+      error: error.message,
     });
+  }
 });
 
 app.listen(SERVER, () => {
