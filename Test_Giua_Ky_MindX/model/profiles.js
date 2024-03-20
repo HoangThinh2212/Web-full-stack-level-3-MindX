@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Collections from '../database/collection';
 
 const profileSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -7,6 +8,5 @@ const profileSchema = new mongoose.Schema({
   personalGoals: String,
 });
 
-const Profile = mongoose.model("Profile", profileSchema);
-
-module.exports = Profile;
+const Profile = mongoose.model(Collections.PROFILES, profileSchema);
+export default Profile;
