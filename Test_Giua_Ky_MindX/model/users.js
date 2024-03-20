@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Collections from '../database/collection';
 
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
@@ -9,6 +10,5 @@ const userSchema = new mongoose.Schema({
   passwordHashed: String, // Hashed password
 });
 
-const Users = mongoose.model("Users", userSchema);
-
-module.exports = Users;
+const UsersModel = mongoose.model(Collections.USERS, userSchema);
+export default UsersModel;
